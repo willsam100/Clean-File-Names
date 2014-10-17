@@ -3,7 +3,6 @@
 import sys
 import os
 import re
-# import shutil
 
 extras = ''
 
@@ -87,7 +86,7 @@ def create_new_name(baseWords):
         notSeries = re.search(r'\d\d\d\d', wd)
         if notSeries:
           newBase.append(notSeries.group(0))
-          continue
+PATH=$JAVA_HOME/bin:$PATH          continue
         season = series.group(1)
         episode = series.group(2)
         tvShowInsertPos = len(newBase)
@@ -105,7 +104,7 @@ def create_new_name(baseWords):
     if year:
       #foundYear = year.group(0)
       continue
-    wd = wd.capitalize()	  
+    wd = wd.capitalize()    
     if wd != '':
       newBase.append(wd)
 
@@ -119,10 +118,6 @@ def create_new_name(baseWords):
 
 #######################################
 def process_dir(dir):
-  rename = ''
-  isFile = '' 
-  renameDir = ''
-
   files = os.listdir(dir)
   completed = []
   for file in files:
@@ -142,11 +137,14 @@ def process_dir(dir):
   return completed
 
 ###########################################
-def parseArgs():
+def main():
+  args = []
   rename = ''
   isFile = '' 
   renameDir = ''
-  args = []
+  
+  #Check the arguments the user has supplied 
+
   #If the user did not supply a file/dir then assume the files in the current dir
   if len(sys.argv) == 1:
     args.append(os.getcwd())
@@ -169,9 +167,9 @@ def parseArgs():
     elif sys.argv[1] == '-h':
       print 'Usage: ./fixFileName.py dir\n'
       print 'Options:'  
-      print '		-y	Confirm the rename'
-      print '		-h	Display this menu'
-      print ' 		-d 	rename the directory itself'
+      print '   -y  Confirm the rename'
+      print '   -h  Display this menu'
+      print '     -d  rename the directory itself'
     #rename the directory itself, not the files inside it
     elif sys.argv[1] == '-d':
       renameDir = 'true'
@@ -187,21 +185,13 @@ def parseArgs():
       else:
         print 'Usage: ./fixFileName.py dir\n'
         print 'Options:'  
-        print '		-y	Confirm the rename'
-        print '		-h	Display this menu'
-        print ' 		-d 	rename the directory itself'
+        print '   -y  Confirm the rename'
+        print '   -h  Display this menu'
+        print '     -d  rename the directory itself'
     else:
     #no flags so add all the items
      for l in range(1, len(sys.argv)):
        args.append(sys.argv[l])
-
-  return rename, isFile, renameDir, args
-
-###########################################
-def main():
-  
-  #Check the arguments the user has supplied 
-  rename, isFile, renameDir, args = parseArgs()
 
   #loop over the items and process them according the flags set
   for arg in args:
@@ -229,26 +219,26 @@ def main():
             print 'Renaming file', os.path.basename(file)
           else:
             print 'Renaming folder', os.path.basename(file)
-            if not os.path.exists(arg):
-              try:      
-                os.rename(arg, file)
-              except:
-                addNumber = 1
-                while os.path.exists((file + ' ' + str(addNumber))):
-                  addNumber += 1
-                os.rename(arg, (file + ' ' + str(addNumber)))
+            try:      
+              os.rename(arg, file)
+            except:
+              addNumber = 1
+              file 
+              while os.path.exists((file + ' ' + str(addNumber))):
+                addNumber += 1
+              os.rename(arg, (file + ' ' + str(addNumber)))
       else:
         print os.path.basename(file)
     else:
       dirs =  process_dir(arg)
       if rename:
         print 'Renaming contents of folder: ', os.path.basename(arg)
-        for result in sorted(dirs):
-           if len(result[1]) > len(arg):
-             os.rename(result[0], result[1])
-             print "%s % 70s" %(str(os.path.basename(result[0])), ' <= \t ' + str(os.path.basename(result[1])))
+        for dir in sorted(dirs):
+           if len(dir[1]) > len(arg):
+             os.rename(dir[0], dir[1])
+             print "%s % 70s" %(str(os.path.basename(dir[0])), ' <= \t ' + str(os.path.basename(dir[1])))
            else:
-             print 'Error with file', result[0]
+             print 'Error with file', dir[0]
       else:
         for dir in sorted(dirs):
           print os.path.basename(dir[1])
