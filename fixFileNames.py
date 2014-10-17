@@ -86,7 +86,7 @@ def create_new_name(baseWords):
         notSeries = re.search(r'\d\d\d\d', wd)
         if notSeries:
           newBase.append(notSeries.group(0))
-PATH=$JAVA_HOME/bin:$PATH          continue
+          continue
         season = series.group(1)
         episode = series.group(2)
         tvShowInsertPos = len(newBase)
