@@ -5,4 +5,4 @@ Files that come from the internet are not alwasy named propery. Use this script 
 Can be used with a single file, list of files or a directory. 
 
 Usage:
-python cleanFileNames.py ugle.file.name.extension
+python fixFileNames.py ugle.file.name.extension
